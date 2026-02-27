@@ -1,0 +1,255 @@
+[
+  {
+    "release_version": "2.4.1",
+    "release_name": "Payments session validation patch",
+    "build_number": "2026.02.25.1",
+    "deployment_id": "dep-2.4.1-prod-01",
+    "release_type": "patch",
+    "deployed_at": "2026-02-25T08:55:00Z",
+    "deployment_started_at": "2026-02-25T08:47:00Z",
+    "deployment_finished_at": "2026-02-25T08:55:00Z",
+    "environment": "prod",
+    "release_channel": "prod",
+    "rollout_strategy": "full",
+    "rollout_percentage": 100.0,
+    "canary_group": null,
+    "summary": "Refactor payment session validation and checkout submit flow.",
+    "release_notes": "Introduced stricter validation for payment session state, updated checkout submit pipeline, and refreshed saved-card selector behavior.",
+    "services_changed": [
+      "payments-api",
+      "checkout-ui"
+    ],
+    "changed_components": [
+      "payment submit flow",
+      "session validation",
+      "saved card selector"
+    ],
+    "endpoints_changed": [
+      "/api/payments/submit",
+      "/api/payments/session",
+      "/checkout/payment"
+    ],
+    "database_changes": [],
+    "schema_migrations": [],
+    "config_changes": [
+      "payment.session.strict_validation=true"
+    ],
+    "owner_team": "payments",
+    "approver": "eng-manager-payments",
+    "deployed_by": "release-bot",
+    "oncall_team": "payments-oncall",
+    "rollback_owner": "payments",
+    "risk_level": "medium",
+    "breaking_change": false,
+    "requires_migration": false,
+    "requires_cache_invalidation": false,
+    "rollback_supported": true,
+    "rollback_instructions": "Revert deployment to 2.4.0 and disable new_payment_session_logic.",
+    "feature_flags_enabled": [
+      "new_payment_session_logic",
+      "saved_cards_refresh"
+    ],
+    "feature_flags_disabled": [],
+    "linked_prs": [
+      "PR-4401",
+      "PR-4408"
+    ],
+    "linked_commits": [
+      "abc1234",
+      "def5678"
+    ],
+    "linked_change_requests": [
+      "CR-920"
+    ],
+    "expected_error_budget_impact": "minimal",
+    "post_deploy_monitoring_window_minutes": 60,
+    "observability_dashboard_id": "payments-prod-main",
+    "runbook_link_text": "Payments production rollback runbook",
+    "known_risks": [
+      "session state mismatch for stale clients",
+      "UI regression on saved card refresh"
+    ]
+  },
+  {
+    "release_version": "2.4.2",
+    "release_name": "Identity premium throttling config update",
+    "build_number": "2026.02.27.1",
+    "deployment_id": "dep-2.4.2-prod-01",
+    "release_type": "patch",
+    "deployed_at": "2026-02-27T07:50:00Z",
+    "deployment_started_at": "2026-02-27T07:42:00Z",
+    "deployment_finished_at": "2026-02-27T07:50:00Z",
+    "environment": "prod",
+    "release_channel": "prod",
+    "rollout_strategy": "full",
+    "rollout_percentage": 100.0,
+    "canary_group": null,
+    "summary": "Updated premium rate limiting thresholds in auth.",
+    "release_notes": "Config-only change to rate limiter rules for premium users.",
+    "services_changed": [
+      "auth-api"
+    ],
+    "changed_components": [
+      "rate-limit-guard"
+    ],
+    "endpoints_changed": [
+      "/api/login"
+    ],
+    "database_changes": [],
+    "schema_migrations": [],
+    "config_changes": [
+      "premium_rate_limit_rules=true"
+    ],
+    "owner_team": "identity",
+    "approver": "eng-manager-identity",
+    "deployed_by": "release-bot",
+    "oncall_team": "identity-oncall",
+    "rollback_owner": "identity",
+    "risk_level": "low",
+    "breaking_change": false,
+    "requires_migration": false,
+    "requires_cache_invalidation": false,
+    "rollback_supported": true,
+    "rollback_instructions": "Restore previous config for premium threshold.",
+    "feature_flags_enabled": [
+      "premium_rate_limit_rules"
+    ],
+    "feature_flags_disabled": [],
+    "linked_prs": [
+      "PR-4501"
+    ],
+    "linked_commits": [
+      "ghi7788"
+    ],
+    "linked_change_requests": [
+      "CR-934"
+    ],
+    "expected_error_budget_impact": "minimal",
+    "post_deploy_monitoring_window_minutes": 30,
+    "observability_dashboard_id": "identity-prod-main",
+    "runbook_link_text": "Identity config rollback runbook",
+    "known_risks": [
+      "false positives on premium login rules"
+    ]
+  },
+  {
+    "release_version": "2.4.0",
+    "release_name": "Notifications queue tuning",
+    "build_number": "2026.02.03.1",
+    "deployment_id": "dep-2.4.0-prod-01",
+    "release_type": "minor",
+    "deployed_at": "2026-02-03T13:30:00Z",
+    "deployment_started_at": "2026-02-03T13:10:00Z",
+    "deployment_finished_at": "2026-02-03T13:30:00Z",
+    "environment": "prod",
+    "release_channel": "prod",
+    "rollout_strategy": "full",
+    "rollout_percentage": 100.0,
+    "canary_group": null,
+    "summary": "Adjusted notifications queue settings and worker concurrency.",
+    "release_notes": "Queue tuning for email workers.",
+    "services_changed": [
+      "notifications-worker"
+    ],
+    "changed_components": [
+      "email dispatcher"
+    ],
+    "endpoints_changed": [
+      "/workers/email"
+    ],
+    "database_changes": [],
+    "schema_migrations": [],
+    "config_changes": [
+      "notifications.worker.concurrency=12"
+    ],
+    "owner_team": "notifications",
+    "approver": "eng-manager-notifications",
+    "deployed_by": "release-bot",
+    "oncall_team": "notifications-oncall",
+    "rollback_owner": "notifications",
+    "risk_level": "low",
+    "breaking_change": false,
+    "requires_migration": false,
+    "requires_cache_invalidation": false,
+    "rollback_supported": true,
+    "rollback_instructions": "Restore previous worker concurrency value.",
+    "feature_flags_enabled": [],
+    "feature_flags_disabled": [],
+    "linked_prs": [
+      "PR-4300"
+    ],
+    "linked_commits": [
+      "noti555"
+    ],
+    "linked_change_requests": [
+      "CR-901"
+    ],
+    "expected_error_budget_impact": "minimal",
+    "post_deploy_monitoring_window_minutes": 30,
+    "observability_dashboard_id": "notifications-prod-main",
+    "runbook_link_text": "Notifications worker rollback runbook",
+    "known_risks": [
+      "temporary queue imbalance"
+    ]
+  },
+  {
+    "release_version": "2.3.9",
+    "release_name": "Checkout spinner refactor",
+    "build_number": "2026.01.19.1",
+    "deployment_id": "dep-2.3.9-prod-02",
+    "release_type": "patch",
+    "deployed_at": "2026-01-19T08:40:00Z",
+    "deployment_started_at": "2026-01-19T08:34:00Z",
+    "deployment_finished_at": "2026-01-19T08:40:00Z",
+    "environment": "prod",
+    "release_channel": "prod",
+    "rollout_strategy": "full",
+    "rollout_percentage": 100.0,
+    "canary_group": null,
+    "summary": "Checkout loading state refactor.",
+    "release_notes": "Refactored loading spinner state handling.",
+    "services_changed": [
+      "checkout-ui"
+    ],
+    "changed_components": [
+      "loading-state-controller"
+    ],
+    "endpoints_changed": [
+      "/checkout/payment"
+    ],
+    "database_changes": [],
+    "schema_migrations": [],
+    "config_changes": [],
+    "owner_team": "checkout",
+    "approver": "eng-manager-checkout",
+    "deployed_by": "release-bot",
+    "oncall_team": "checkout-oncall",
+    "rollback_owner": "checkout",
+    "risk_level": "medium",
+    "breaking_change": false,
+    "requires_migration": false,
+    "requires_cache_invalidation": false,
+    "rollback_supported": true,
+    "rollback_instructions": "Revert UI bundle to previous build.",
+    "feature_flags_enabled": [
+      "checkout_spinner_refactor"
+    ],
+    "feature_flags_disabled": [],
+    "linked_prs": [
+      "PR-4100"
+    ],
+    "linked_commits": [
+      "chk444"
+    ],
+    "linked_change_requests": [
+      "CR-877"
+    ],
+    "expected_error_budget_impact": "minimal",
+    "post_deploy_monitoring_window_minutes": 45,
+    "observability_dashboard_id": "checkout-prod-main",
+    "runbook_link_text": "Checkout UI rollback runbook",
+    "known_risks": [
+      "spinner may persist on stale state"
+    ]
+  }
+]

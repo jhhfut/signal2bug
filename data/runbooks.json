@@ -1,0 +1,144 @@
+[
+  {
+    "runbook_id": "RB-PAY-001",
+    "title": "Payments submit HTTP 500 regression response",
+    "summary": "Contain and verify payment submit regressions after a release.",
+    "incident_type": "payment_submit_failure",
+    "severity_scope": "high",
+    "service": "payments-api",
+    "component": "payment-submit-handler",
+    "environment": "prod",
+    "applicability_conditions": "Use when payment submit returns HTTP 500 and user reports checkout freeze after a release.",
+    "trigger_signals": [
+      "HTTP_500",
+      "PAYMENT_SESSION_MISSING",
+      "checkout freeze"
+    ],
+    "recommended_actions": [
+      "Confirm release correlation",
+      "Check feature flag state",
+      "Notify payments on-call",
+      "Prepare rollback if impact grows"
+    ],
+    "rollback_steps": [
+      "Disable new_payment_session_logic",
+      "Revert to previous build if needed"
+    ],
+    "verification_steps": [
+      "Re-run checkout payment flow",
+      "Confirm 500 rate drops below baseline"
+    ],
+    "safe_actions_only": true,
+    "requires_human_approval": true,
+    "owner_team": "payments",
+    "oncall_team": "payments-oncall",
+    "escalation_path": "payments-oncall -> engineering manager -> incident commander",
+    "related_services": [
+      "payments-api",
+      "checkout-ui"
+    ],
+    "linked_release_types": [
+      "patch"
+    ],
+    "known_limitations": "Does not diagnose downstream third-party processor outages.",
+    "updated_at": "2026-02-25T09:00:00Z",
+    "version": "1.0",
+    "tags": [
+      "payments",
+      "rollback",
+      "triage"
+    ]
+  },
+  {
+    "runbook_id": "RB-CHK-002",
+    "title": "Checkout UI regression triage",
+    "summary": "Handle checkout UI regressions that do not necessarily emit backend errors.",
+    "incident_type": "checkout_ui_regression",
+    "severity_scope": "medium",
+    "service": "checkout-ui",
+    "component": "saved-card-selector",
+    "environment": "prod",
+    "applicability_conditions": "Use when checkout UI behavior changes after deploy.",
+    "trigger_signals": [
+      "saved cards missing",
+      "UI_SELECTOR_HIDDEN"
+    ],
+    "recommended_actions": [
+      "Capture browser screenshot",
+      "Compare feature flag state",
+      "Notify checkout team"
+    ],
+    "rollback_steps": [
+      "Disable saved_cards_refresh flag",
+      "Redeploy previous UI bundle if needed"
+    ],
+    "verification_steps": [
+      "Open checkout with stored card user",
+      "Confirm selector remains visible"
+    ],
+    "safe_actions_only": true,
+    "requires_human_approval": false,
+    "owner_team": "checkout",
+    "oncall_team": "checkout-oncall",
+    "escalation_path": "checkout-oncall -> frontend lead",
+    "related_services": [
+      "checkout-ui"
+    ],
+    "linked_release_types": [
+      "patch",
+      "minor"
+    ],
+    "known_limitations": "Frontend-only signal may not produce strong backend evidence.",
+    "updated_at": "2026-02-25T09:05:00Z",
+    "version": "1.0",
+    "tags": [
+      "checkout",
+      "ui"
+    ]
+  },
+  {
+    "runbook_id": "RB-AUTH-003",
+    "title": "Identity config rollback for login throttling",
+    "summary": "Investigate and safely revert login throttling config changes.",
+    "incident_type": "auth_rate_limit_issue",
+    "severity_scope": "medium",
+    "service": "auth-api",
+    "component": "rate-limit-guard",
+    "environment": "prod",
+    "applicability_conditions": "Use when users are incorrectly throttled after config change.",
+    "trigger_signals": [
+      "FALSE_THROTTLE",
+      "HTTP_429"
+    ],
+    "recommended_actions": [
+      "Check premium_rate_limit_rules",
+      "Verify user tier impacted",
+      "Notify identity on-call"
+    ],
+    "rollback_steps": [
+      "Restore previous premium threshold",
+      "Flush rate-limit cache if necessary"
+    ],
+    "verification_steps": [
+      "Re-test login with premium account"
+    ],
+    "safe_actions_only": true,
+    "requires_human_approval": false,
+    "owner_team": "identity",
+    "oncall_team": "identity-oncall",
+    "escalation_path": "identity-oncall -> auth lead",
+    "related_services": [
+      "auth-api"
+    ],
+    "linked_release_types": [
+      "patch"
+    ],
+    "known_limitations": "Not applicable to credential stuffing attacks.",
+    "updated_at": "2026-02-27T07:55:00Z",
+    "version": "1.0",
+    "tags": [
+      "identity",
+      "config"
+    ]
+  }
+]
